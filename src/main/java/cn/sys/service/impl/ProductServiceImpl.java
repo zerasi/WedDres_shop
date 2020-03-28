@@ -1,5 +1,8 @@
 package cn.sys.service.impl;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.List;
 
 import cn.sys.entity.ProductDes;
@@ -79,14 +82,41 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public void editProductDes(ProductDes productDes) {
+	public void editProductDes(ProductDes productDes) throws IOException {
+		//productDes
+		File file = new File("C:\\temp\\"+new Date().getTime()+".txt");
+		if(!file.exists()){
+			file.createNewFile();
+		}
+		FileWriter fw = new FileWriter(file);
+		fw.write(productDes.getImg_base());
+		fw.close();
+		productDes.setImg_base(file.getAbsolutePath());
 		this.mapper.insertProductDes(productDes);
 
 	}
 
 	@Override
 	public List<ProductDes> getProductDesByPid(ProductDes productDes) {
-		return this.mapper.getProductDesByPid(productDes);
+		List<ProductDes> list = this.mapper.getProductDesByPid(productDes);
+		for(ProductDes p: list){
+			try {
+				File file = new File(p.getImg_base());
+				if(!file.exists()){
+					continue;
+				}
+				FileInputStream inputStream = new FileInputStream(file);
+				int length = inputStream.available();
+				byte bytes[] = new byte[length];
+				inputStream.read(bytes);
+				inputStream.close();
+				String str =new String(bytes, StandardCharsets.UTF_8);
+				p.setImg_base(str);
+			}catch (IOException io){
+				io.printStackTrace();
+			}
+		}
+		return list;
 	}
 
 	@Override

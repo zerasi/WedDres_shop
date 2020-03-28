@@ -1,5 +1,6 @@
 package cn.sys.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import cn.sys.entity.Product;
@@ -23,7 +24,7 @@ public interface ProductService {
 
 	List<Product> findAll(ProductExample example);
 
-    void editProductDes(ProductDes productDes);
+    void editProductDes(ProductDes productDes) throws IOException;
 
     List<ProductDes> getProductDesByPid(ProductDes productDes);
 
