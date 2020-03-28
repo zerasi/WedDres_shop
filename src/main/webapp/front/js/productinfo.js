@@ -57,9 +57,9 @@ var vm = new Vue({
     		var options = {pId:this.id,count:this.count};
     		this.$http.post('../cart/addCart.do',options,{emulateJSON:true}).then(function(res){
     			if(res.body.success){
-    				this.msg="添加购物车成功"
+    				this.msg="预约成功"
     			}else{
-    				this.msg="添加购物车失败"
+    				this.msg="预约失败"
     			}
     			
             },function(res){
