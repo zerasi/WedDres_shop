@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" 
+  xmlns:context="http://www.springframework.org/schema/context" 
+  xmlns:mvc="http://www.springframework.org/schema/mvc" 
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xmlns:tx="http://www.springframework.org/schema/tx" 
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+            http://www.springframework.org/schema/beans/spring-beans.xsd   
+            http://www.springframework.org/schema/context   
+            http://www.springframework.org/schema/context/spring-context.xsd   
+            http://www.springframework.org/schema/mvc   
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+            http://www.springframework.org/schema/cache  
+            http://www.springframework.org/schema/cache/spring-cache.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">  
+     <!-- 开启注解  -->
+     <context:component-scan base-package="cn.sys"></context:component-scan>
+     
+     <context:property-placeholder location="classpath:spring/*.properties"/>
+     <!-- 数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="maxActive" value="10" />
+        <property name="minIdle" value="5" />
+    </bean>
+     
+     <!-- 注册sqlsessionfactory -->
+     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+     	<property name="configLocation" value="classpath:spring/mybatis.xml"></property>
+     	<property name="dataSource" ref="dataSource"></property>
+     </bean>
+     
+     <!-- 生成dao的代理对象 -->
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+     	<property name="basePackage" value="cn.sys.dao"></property>
+     	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+     </bean>
+     
+     <!-- 注册事务管理器 -->
+     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+     	<property name="dataSource" ref="dataSource"></property>
+     </bean>
+     <tx:annotation-driven transaction-manager="transactionManager"/>
+     
+     
+       <!--  <context:property-placeholder location="classpath*:properties/*.properties" />    -->
+  
+   <!-- redis 相关配置 --> 
+   <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">  
+     <property name="maxIdle" value="${redis.maxIdle}" />   
+     <property name="maxWaitMillis" value="${redis.maxWait}" />  
+     <property name="testOnBorrow" value="${redis.testOnBorrow}" />  
+   </bean>  
+  
+   <bean id="JedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
+       p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.pass}" p:pool-config-ref="poolConfig"/>  
+       
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">  
+    	<property name="connectionFactory" ref="JedisConnectionFactory" />  
+   </bean> 
+</beans>

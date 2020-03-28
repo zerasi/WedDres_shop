@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>影城</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="js/vue.min.js"></script>
+	<script type="text/javascript" src="js/vue-resource.min.js"></script>
+</head>
+<body>
+	<div class="header_con" id="header">
+		<div class="header">
+			<div class="welcome fl">欢迎来到影城!</div>
+			<div class="fr">
+				
+				<div class="login_btn fl" v-if="username == null" >
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
+				</div>
+				<div class="login_info fl" v-else-if="username != null" style="display: inline-block;">
+					欢迎您：<em>{{username}}</em>
+				</div>
+				<div class="login_btn fl" v-if="username != null" >
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的预约</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+<script type="text/javascript" src="js/header1.js"></script>
+<div id="myorder">
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<!-- <div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索样片">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>	 -->	
+	</div>
+
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="user_center_info.html">· 个人信息</a></li>
+				<li><a href="user_center_order.html" class="active">· 全部订单</a></li>
+				<!-- <li><a href="user_center_site.html">· 收货地址</a></li> -->
+			</ul>
+		</div>
+		<div class="right_content clearfix">
+				<h3 class="common_title2">全部订单</h3>
+				<div v-for="item in orderList">
+				<ul class="order_list_th w978 clearfix">
+					<li class="col01">{{item.create_time}}</li>
+					<li class="col02">订单号：{{item.id}}</li>
+					<li style="margin-left: 50px;" v-if="item.status==0">未付款</span>
+					<li style="margin-left: 50px;color: orange;" v-else-if="item.status==1">已付款未发货</li>
+					<li style="margin-left: 50px;color: red;" v-else-if="item.status==2">已发货</li>
+					<li style="margin-left: 50px;color: green;" v-else-if="item.status==3">已收货</li>		
+				</ul>
+
+				<table class="order_list_table w980">
+					<tbody>
+						<tr>
+							<td width="55%">
+								<ul class="order_goods_list clearfix" v-for="i in item.orderitems">					
+									<li class="col01"><img :src="i.img"></li>
+									<li class="col02">{{i.title}}</li>	
+									<li class="col03">{{i.count}}</li>
+									<li class="col04">{{i.totalfee}}</li>	
+								</ul>
+							</td>
+							<td width="15%">{{item.payment}}</td>
+							<td width="15%" v-if="item.status == 1">已付款</td>
+		                	<td width="15%" v-else-if="item.status == 0"><a class="oper_btn" @click="pay(item.id)">去付款</a></td>
+		                	<td width="15%" v-else-if="item.status == 2" @click="over(item.id)"><a class="oper_btn">收货</a></td>
+		                	<td width="15%" v-else-if="item.status == 3">已收货</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<!-- <div class="pagenation">
+					<a href="#">上一页</a>
+					<a href="#" class="active">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">4</a>
+					<a href="#">5</a>
+					<a href="#">下一页></a>
+				</div> -->
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript" src="js/myorder.js"></script>
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2019 北京影城有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	
+</body>
+</html>

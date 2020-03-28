@@ -1,0 +1,10 @@
+[
+		{ "id":"10", "pId":"0", "name":"管理员"},
+		{ "id":"118", "pId":"10", "name":"管理员", "page":"pages/base/admin.html"},
+		{ "id":"12", "pId":"0", "name":"用户管理"},
+		{ "id":"118", "pId":"12", "name":"用户管理", "page":"pages/base/user.html"},
+		{ "id":"11", "pId":"0", "name":"婚纱套系管理"},
+		{ "id":"118", "pId":"11", "name":"拍摄风格", "page":"pages/base/category.html"},
+		{ "id":"123", "pId":"11", "name":"婚纱套系管理" ,"page":"pages/base/product.html"},
+		{ "id":"123", "pId":"11", "name":"订单管理" ,"page":"pages/base/order.html"}
+]

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>影城</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="js/vue.min.js"></script>
+	<script type="text/javascript" src="js/vue-resource.min.js"></script>
+</head>
+<body>
+	<div class="header_con" id="header">
+		<div class="header">
+			<div class="welcome fl">欢迎来到影城!</div>
+			<div class="fr">
+				
+				<div class="login_btn fl" v-if="username == null" >
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
+				</div>
+				<div class="login_info fl" v-else-if="username != null" style="display: inline-block;">
+					欢迎您：<em>{{username}}</em>
+				</div>
+				<div class="login_btn fl" v-if="username != null" >
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的预约</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+<script type="text/javascript" src="js/header1.js"></script>
+<div id="cartDetail">
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<!-- <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;购物车</div>
+		<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索样片">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>	 -->	
+	</div> 
+
+	<div class="total_count">全部样片<em>2</em>件</div>	
+	<ul class="cart_list_th clearfix" style="border: 1px solid #ffa07b;">
+		<li class="col01">样片名称</li>
+		<li class="col02">样片单位</li>
+		<li class="col03">样片价格</li>
+		<li class="col04">数量</li>
+		<li class="col05">小计</li>
+		<li class="col06">操作</li>
+	</ul>
+	<div v-for="item in cartList">
+		<ul class="cart_list_th clearfix" style="border: 0px;">
+			<li class="col01" style="margin-left: -86px;">样片分类：{{item.cateName}}</li>
+		</ul>
+		<ul class="cart_list_td clearfix" v-for="i in item.orderItemList">
+			<li class="col01"></li>
+			<li class="col02"><img :src="i.img"></li>
+			<li class="col03">{{i.title}}<br></li>
+			<li class="col04">1</li>
+			<li class="col05">￥{{i.price}}元</li>
+			<li class="col06">
+				<div class="num_add">
+					<a href="javascript:;" class="add fl" @click="addCount(i.pid,i.count)">-</a>
+					<input type="text" class="num_show fl"  v-model="i.count" readonly="readonly">	
+					<a href="javascript:;" class="minus fl" @click="subCount(i.pid,i.count)">+</a>	
+				</div>
+			</li>
+			<li class="col07">25.80元</li>
+			<li class="col08"><a href="javascript:;" @click="delcart(i.pid,i.count)">删除</a></li>
+		</ul>
+	</div>
+	
+	
+	
+
+	<ul class="settlements">
+		<li class="col01"></li>
+		<li class="col02"></li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em>{{allfee}}</em><br>共计<b>{{totalCount}}</b>件样片</li>
+		<li class="col04"><a href="javascript:;" @click="subOrder()">去结算</a></li>
+	</ul>
+
+</div>
+<script type="text/javascript" src="js/cartDetail.js"></script>
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2019 北京影城有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	
+</body>
+</html>
